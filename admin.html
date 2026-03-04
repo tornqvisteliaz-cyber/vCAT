@@ -1,5 +1,50 @@
 <!doctype html>
 <html lang="en">
+codex/create-website-for-copenhagen-airtaxi-virtual-mqxcvr
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Operations Console</title><link rel="stylesheet" href="styles.css"/></head>
+<body>
+<header class="top-nav"><div class="container nav-inner"><h2 class="brand">Operations Console</h2><nav><a href="index.html">Back to site</a></nav></div></header>
+<main class="container admin-wrap" id="adminRoot">
+  <section class="panel">
+    <h3>General Brand</h3>
+    <label>Name<input id="siteNameInput"/></label>
+    <label>Slogan<input id="sloganInput"/></label>
+    <label>Intro<textarea id="introInput" rows="3"></textarea></label>
+    <label>Contact Email<input id="emailInput"/></label>
+    <label>Discord URL<input id="discordInput"/></label>
+    <button class="btn" id="saveGeneral">Save general</button>
+    <button class="btn alt" id="resetData">Reset defaults</button>
+
+    <h3>Add Airline</h3>
+    <label>Name<input id="airlineName"/></label>
+    <label>Style<input id="airlineStyle"/></label>
+    <label>Callsign<input id="airlineCallsign"/></label>
+    <label>Description<textarea id="airlineDescription" rows="2"></textarea></label>
+    <label>Bases (comma)<input id="airlineBases"/></label>
+    <label>Fleet (comma)<input id="airlineFleet"/></label>
+    <button class="btn" id="addAirline">Add airline</button>
+    <ul class="list" id="airlineList"></ul>
+
+    <h3>Add Route</h3>
+    <label>From<input id="routeFrom"/></label>
+    <label>To<input id="routeTo"/></label>
+    <label>Airline<select id="routeAirline"></select></label>
+    <label>Duration<input id="routeDuration" placeholder="1h 20m"/></label>
+    <button class="btn" id="addRoute">Add route</button>
+    <ul class="list" id="routeList"></ul>
+  </section>
+
+  <section class="panel">
+    <h3>Full JSON Editor (change everything)</h3>
+    <p class="muted">You can edit the complete website data model here.</p>
+    <textarea id="rawJson" rows="32"></textarea>
+    <p id="jsonStatus" class="muted"></p>
+    <button class="btn" id="saveJson">Save JSON</button>
+  </section>
+</main>
+<script src="app.js"></script><script>window.vcat.setupAdminPage();</script>
+</body>
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -59,4 +104,5 @@
       window.vcat.setupAdminPage();
     </script>
   </body>
+ main
 </html>

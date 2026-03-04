@@ -1,4 +1,90 @@
 :root {
+ codex/create-website-for-copenhagen-airtaxi-virtual-mqxcvr
+  --bg: #050816;
+  --bg2: #0e1731;
+  --panel: rgba(20, 31, 58, 0.75);
+  --line: rgba(142, 172, 255, 0.2);
+  --text: #e9efff;
+  --muted: #9ab0df;
+  --primary: #73b7ff;
+  --accent: #7ef6cb;
+  --radius: 16px;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 10% -10%, #214987 0%, transparent 45%),
+    radial-gradient(circle at 110% 10%, #1b6b88 0%, transparent 33%),
+    linear-gradient(160deg, var(--bg) 0%, var(--bg2) 100%);
+}
+.container { width: min(1180px, 92vw); margin: 0 auto; }
+.top-nav {
+  position: sticky; top: 0; z-index: 40;
+  backdrop-filter: blur(10px);
+  background: rgba(5, 8, 22, 0.65);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; padding: .9rem 0; }
+.brand { font-size: 1.05rem; letter-spacing: .04em; margin: 0; }
+nav { display: flex; gap: .45rem; flex-wrap: wrap; }
+nav a {
+  color: var(--text); text-decoration: none; font-size: .92rem;
+  padding: .45rem .7rem; border-radius: 999px; border: 1px solid transparent;
+}
+nav a:hover { border-color: var(--line); background: rgba(255,255,255,.03); }
+.hero { padding: 4.8rem 0 3rem; }
+.hero-panel {
+  border: 1px solid var(--line); border-radius: 24px; padding: 2rem;
+  background: linear-gradient(130deg, rgba(115,183,255,.14), rgba(126,246,203,.08));
+  box-shadow: 0 20px 50px rgba(0,0,0,.35);
+}
+h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.8rem); }
+.muted { color: var(--muted); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: .75rem; margin-top: 1rem; }
+.stats article { background: rgba(2,8,18,.35); border: 1px solid var(--line); border-radius: 14px; padding: .9rem; }
+.stats strong { display: block; font-size: 1.6rem; color: var(--accent); }
+section { margin: 2rem 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap: .95rem; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; }
+.card h3 { margin-top: .1rem; }
+.chip { display: inline-block; font-size: .78rem; border: 1px solid var(--line); border-radius: 999px; padding: .2rem .55rem; margin: .16rem; }
+.table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: var(--radius); border: 1px solid var(--line); }
+.table th,.table td { padding: .72rem; border-bottom: 1px solid var(--line); text-align: left; }
+.table tr:last-child td { border-bottom: 0; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.footer {
+  margin-top: 3rem; padding: 1rem 0 2rem; color: var(--muted); border-top: 1px solid var(--line);
+}
+.admin-discreet {
+  float: right;
+  opacity: .28;
+  text-decoration: none;
+  color: var(--muted);
+  font-size: .75rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: .2rem .45rem;
+}
+.admin-discreet:hover { opacity: .8; border-color: var(--line); }
+
+/* admin */
+.admin-wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1rem; padding: 1.4rem 0 2.4rem; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; }
+label { display:block; font-size:.86rem; margin:.45rem 0; }
+input, textarea, select {
+  width:100%; margin-top:.22rem; padding:.52rem .58rem; border-radius:10px;
+  border:1px solid var(--line); background:#0a1229; color:var(--text);
+}
+.btn { background: var(--primary); color:#081223; border:0; border-radius:10px; padding:.55rem .8rem; font-weight:700; cursor:pointer; margin-right:.35rem; }
+.btn.alt { background: transparent; color:var(--text); border:1px solid var(--line); }
+.ghost { background:transparent; color:#ff9b9b; border:1px solid rgba(255,155,155,.35); border-radius:8px; font-size:.75rem; cursor:pointer; }
+.list { list-style:none; padding:0; margin:0; }
+.list li { padding:.35rem 0; border-bottom:1px solid var(--line); }
+@media (max-width: 900px){ .split,.admin-wrap { grid-template-columns:1fr; } }
+
   --bg: #091122;
   --bg-soft: #111b31;
   --panel: #172642;
@@ -226,3 +312,4 @@ label {
     grid-template-columns: 1fr;
   }
 }
+ main
