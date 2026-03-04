@@ -1,4 +1,5 @@
 :root {
+ codex/create-website-for-copenhagen-airtaxi-virtual-mqxcvr
   --bg: #050816;
   --bg2: #0e1731;
   --panel: rgba(20, 31, 58, 0.75);
@@ -83,3 +84,232 @@ input, textarea, select {
 .list { list-style:none; padding:0; margin:0; }
 .list li { padding:.35rem 0; border-bottom:1px solid var(--line); }
 @media (max-width: 900px){ .split,.admin-wrap { grid-template-columns:1fr; } }
+
+  --bg: #091122;
+  --bg-soft: #111b31;
+  --panel: #172642;
+  --text: #eaf2ff;
+  --muted: #a6b7d9;
+  --primary: #53b8ff;
+  --accent: #7affc7;
+  --danger: #ff7b7b;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at top right, #163c66 0%, var(--bg) 45%);
+  min-height: 100vh;
+}
+
+.container {
+  width: min(1100px, 92vw);
+  margin: 0 auto;
+}
+
+.top-nav {
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(10px);
+  background: rgba(9, 17, 34, 0.7);
+  border-bottom: 1px solid rgba(83, 184, 255, 0.2);
+  z-index: 20;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 0;
+}
+
+.brand {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.03em;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 0.7rem;
+}
+
+.btn {
+  border: 1px solid transparent;
+  background: var(--primary);
+  color: #031225;
+  padding: 0.6rem 0.95rem;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.btn.secondary {
+  background: transparent;
+  color: var(--text);
+  border-color: rgba(166, 183, 217, 0.3);
+}
+
+.btn.danger {
+  background: var(--danger);
+}
+
+.hero {
+  padding: 5rem 0 3rem;
+}
+
+.hero-card {
+  background: linear-gradient(130deg, rgba(83, 184, 255, 0.18), rgba(122, 255, 199, 0.12));
+  border: 1px solid rgba(83, 184, 255, 0.35);
+  border-radius: 18px;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.hero h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+}
+
+.hero p {
+  color: var(--muted);
+  max-width: 70ch;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.stat {
+  background: rgba(9, 17, 34, 0.4);
+  border: 1px solid rgba(166, 183, 217, 0.2);
+  border-radius: 12px;
+  padding: 0.9rem;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.stat-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.section {
+  margin: 2rem 0;
+}
+
+.section h3 {
+  margin-bottom: 0.35rem;
+}
+
+.section-subtitle {
+  color: var(--muted);
+  margin-top: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid rgba(166, 183, 217, 0.2);
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: var(--shadow);
+}
+
+.card h4 {
+  margin-top: 0;
+}
+
+.tag {
+  display: inline-block;
+  border: 1px solid rgba(83, 184, 255, 0.35);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  margin-right: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(166, 183, 217, 0.15);
+}
+
+.list li:last-child {
+  border-bottom: 0;
+}
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 1rem;
+  padding: 2rem 0 3rem;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid rgba(166, 183, 217, 0.2);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.field,
+textarea,
+input,
+select {
+  width: 100%;
+  border-radius: 9px;
+  border: 1px solid rgba(166, 183, 217, 0.35);
+  background: #0c1730;
+  color: var(--text);
+  padding: 0.55rem 0.65rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.65rem;
+  font-size: 0.9rem;
+}
+
+.inline {
+  display: flex;
+  gap: 0.5rem;
+  align-items: end;
+}
+
+.tiny {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 880px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+}
+ main

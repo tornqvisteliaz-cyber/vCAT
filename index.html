@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+codex/create-website-for-copenhagen-airtaxi-virtual-mqxcvr
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Copenhagen AirTaxi Virtual</title><link rel="stylesheet" href="styles.css" />
@@ -17,4 +18,70 @@
   <footer class="container footer">Copenhagen AirTaxi Virtual group network <a class="admin-discreet" href="admin.html" title="Operations Console">ops</a></footer>
   <script src="app.js"></script><script>window.vcat.renderByPage();</script>
 </body>
+=======
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Copenhagen AirTaxi Virtual</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="top-nav">
+      <div class="container nav-inner">
+        <h1 class="brand" id="siteName">Copenhagen AirTaxi Virtual</h1>
+        <div class="nav-actions">
+          <a class="btn secondary" href="#airlines">Airlines</a>
+          <a class="btn" href="admin.html">Admin</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <div class="hero-card">
+          <h2 id="heroTitle">Copenhagen AirTaxi Virtual</h2>
+          <p id="heroTagline"></p>
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-label">Airlines</div>
+              <div class="stat-value" id="countAirlines">0</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Base Airports</div>
+              <div class="stat-value" id="countBases">0</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Published Routes</div>
+              <div class="stat-value" id="countRoutes">0</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="airlines">
+        <h3>Our Airlines</h3>
+        <p class="section-subtitle">Operations, hubs, and fleet snapshots.</p>
+        <div class="grid" id="airlinesContainer"></div>
+      </section>
+
+      <section class="section">
+        <h3>Active Routes</h3>
+        <ul class="card list" id="routeList"></ul>
+      </section>
+
+      <section class="section">
+        <h3>About & Contact</h3>
+        <div class="card">
+          <p id="aboutText"></p>
+          <p><strong>Operations contact:</strong> <span id="contactEmail"></span></p>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+    <script>
+      window.vcat.renderPublicSite(window.vcat.loadData());
+    </script>
+  </body>
+main
 </html>
