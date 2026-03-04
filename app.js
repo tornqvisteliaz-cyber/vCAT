@@ -50,6 +50,13 @@ const DEFAULT_DATA = {
 
 const STORAGE_KEY = "vcatDataV2";
 
+function cloneValue(value) {
+  if (typeof structuredClone === "function") {
+    return structuredClone(value);
+  }
+  return JSON.parse(JSON.stringify(value));
+}
+
 function mergeDeep(base, patch) {
   if (Array.isArray(base)) return Array.isArray(patch) ? patch : base;
   if (typeof base !== "object" || base === null) return patch ?? base;
@@ -65,11 +72,11 @@ function mergeDeep(base, patch) {
 
 function loadData() {
   const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("vcatData");
-  if (!raw) return structuredClone(DEFAULT_DATA);
+  if (!raw) return cloneValue(DEFAULT_DATA);
   try {
-    return mergeDeep(structuredClone(DEFAULT_DATA), JSON.parse(raw));
+    return mergeDeep(cloneValue(DEFAULT_DATA), JSON.parse(raw));
   } catch {
-    return structuredClone(DEFAULT_DATA);
+    return cloneValue(DEFAULT_DATA);
   }
 }
 
@@ -143,7 +150,6 @@ function renderByPage() {
   if (page === "airlines") renderAirlines(data);
   if (page === "routes") renderRoutes(data);
   if (page === "operations") renderOperations(data);
-  if (page === "community") renderOperations(data);
 }
 
 function setupAdminPage() {
@@ -167,11 +173,17 @@ function setupAdminPage() {
         (r, i) => `<li>${r.from}→${r.to} ${r.airline} <button class="ghost" data-del-route="${i}">Delete</button></li>`
       )
       .join("");
+    const routeAirline = byId("routeAirline");
+    if (routeAirline) {
+      routeAirline.innerHTML = data.airlines
+        .map((a) => `<option value="${a.name}">${a.name}</option>`)
+        .join("");
+    }
     rawJson.value = JSON.stringify(data, null, 2);
   }
 
   byId("saveGeneral").onclick = () => {
-    data.brand.name = byId("siteNameInput").value.trim();
+    data.brand.name = byId("siteNameInput").value.trim() || DEFAULT_DATA.brand.name;
     data.brand.slogan = byId("sloganInput").value.trim();
     data.brand.shortIntro = byId("introInput").value.trim();
     data.brand.contactEmail = byId("emailInput").value.trim();
@@ -199,7 +211,12 @@ function setupAdminPage() {
     const from = byId("routeFrom").value.trim().toUpperCase();
     const to = byId("routeTo").value.trim().toUpperCase();
     if (!from || !to) return;
-    data.routes.push({ from, to, airline: byId("routeAirline").value.trim(), duration: byId("routeDuration").value.trim() });
+    data.routes.push({
+      from,
+      to,
+      airline: byId("routeAirline").value.trim(),
+      duration: byId("routeDuration").value.trim()
+    });
     saveData(data);
     paint();
   };
@@ -224,7 +241,7 @@ function setupAdminPage() {
   byId("saveJson").onclick = () => {
     try {
       const parsed = JSON.parse(rawJson.value);
-      data = mergeDeep(structuredClone(DEFAULT_DATA), parsed);
+      data = mergeDeep(cloneValue(DEFAULT_DATA), parsed);
       saveData(data);
       byId("jsonStatus").textContent = "JSON saved.";
       paint();
@@ -234,7 +251,7 @@ function setupAdminPage() {
   };
 
   byId("resetData").onclick = () => {
-    data = structuredClone(DEFAULT_DATA);
+    data = cloneValue(DEFAULT_DATA);
     saveData(data);
     paint();
   };

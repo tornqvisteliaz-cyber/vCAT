@@ -73,7 +73,7 @@ section { margin: 2rem 0; }
 .admin-wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1rem; padding: 1.4rem 0 2.4rem; }
 .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; }
 label { display:block; font-size:.86rem; margin:.45rem 0; }
-input, textarea {
+input, textarea, select {
   width:100%; margin-top:.22rem; padding:.52rem .58rem; border-radius:10px;
   border:1px solid var(--line); background:#0a1229; color:var(--text);
 }
