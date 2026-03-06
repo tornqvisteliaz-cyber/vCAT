@@ -231,8 +231,10 @@ function renderRoutes(data) {
 function renderOperations(data) {
   const list = byId("opsHighlights");
   if (list) list.innerHTML = data.operations.highlights.map((h) => `<li>${h}</li>`).join("");
+
   const training = byId("trainingText");
   if (training) training.textContent = data.operations.training;
+
   const contact = byId("contactLine");
   if (contact) contact.textContent = `${data.brand.contactEmail} · ${data.brand.discord}`;
 }
