@@ -1,4 +1,42 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Operations</title><link rel="stylesheet" href="styles.css"/></head>
-<body data-page="operations"><header class="top-nav"><div class="container nav-inner"><h2 class="brand" data-bind="siteName"></h2><nav><a href="index.html">Home</a><a href="airlines.html">Airlines</a><a href="routes.html">Routes</a><a href="operations.html">Operations</a><a href="community.html">Community</a></nav></div></header>
-<main class="container"><section class="hero"><article class="hero-panel"><h1>Operations Center</h1><p class="muted">How we keep realism high and the experience smooth.</p></article></section><section class="split"><article class="card"><h3>Highlights</h3><ul id="opsHighlights"></ul></article><article class="card"><h3>Academy & Training</h3><p id="trainingText"></p></article></section></main>
-<footer class="container footer">Operations support: <span id="contactLine"></span> <a class="admin-discreet" href="admin.html">ops</a></footer><script src="app.js"></script><script>window.vcat.renderByPage();</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Operations | vCAT</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="operations" class="page-shell">
+  <header class="page-top">
+    <div class="container page-top-wrap">
+      <h2 class="brand" data-bind="siteName"></h2>
+      <nav>
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="airlines.html">Airlines</a>
+        <a class="nav-link" href="routes.html">Routes</a>
+        <a class="nav-link" href="operations.html">Operations</a>
+        <a class="nav-link" href="community.html">Community</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-main">
+    <p class="section-title">Operations Center</p>
+    <div class="grid">
+      <article class="card">
+        <h3>Highlights</h3>
+        <ul id="opsHighlights"></ul>
+      </article>
+      <article class="card">
+        <h3>Academy & Training</h3>
+        <p id="trainingText"></p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="container footer">Operations support: <span id="contactLine"></span> <a class="admin-discreet" href="admin.html">ops</a></footer>
+
+  <script src="app.js"></script>
+  <script>window.vcat.renderByPage();</script>
+</body>
+</html>

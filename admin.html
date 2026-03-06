@@ -1,108 +1,62 @@
 <!doctype html>
 <html lang="en">
-codex/create-website-for-copenhagen-airtaxi-virtual-mqxcvr
-<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Operations Console</title><link rel="stylesheet" href="styles.css"/></head>
-<body>
-<header class="top-nav"><div class="container nav-inner"><h2 class="brand">Operations Console</h2><nav><a href="index.html">Back to site</a></nav></div></header>
-<main class="container admin-wrap" id="adminRoot">
-  <section class="panel">
-    <h3>General Brand</h3>
-    <label>Name<input id="siteNameInput"/></label>
-    <label>Slogan<input id="sloganInput"/></label>
-    <label>Intro<textarea id="introInput" rows="3"></textarea></label>
-    <label>Contact Email<input id="emailInput"/></label>
-    <label>Discord URL<input id="discordInput"/></label>
-    <button class="btn" id="saveGeneral">Save general</button>
-    <button class="btn alt" id="resetData">Reset defaults</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Operations Console | vCAT</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="page-shell">
+  <header class="page-top">
+    <div class="container page-top-wrap">
+      <h2 class="brand">Operations Console</h2>
+      <nav>
+        <a class="nav-link" href="index.html">Back to site</a>
+      </nav>
+    </div>
+  </header>
 
-    <h3>Add Airline</h3>
-    <label>Name<input id="airlineName"/></label>
-    <label>Style<input id="airlineStyle"/></label>
-    <label>Callsign<input id="airlineCallsign"/></label>
-    <label>Description<textarea id="airlineDescription" rows="2"></textarea></label>
-    <label>Bases (comma)<input id="airlineBases"/></label>
-    <label>Fleet (comma)<input id="airlineFleet"/></label>
-    <button class="btn" id="addAirline">Add airline</button>
-    <ul class="list" id="airlineList"></ul>
+  <main class="container admin-wrap" id="adminRoot">
+    <section class="panel">
+      <h3>General Brand</h3>
+      <label>Name<input id="siteNameInput" /></label>
+      <label>Slogan<input id="sloganInput" /></label>
+      <label>Intro<textarea id="introInput" rows="3"></textarea></label>
+      <label>Contact Email<input id="emailInput" /></label>
+      <label>Discord URL<input id="discordInput" /></label>
+      <button class="btn" id="saveGeneral">Save general</button>
+      <button class="btn alt" id="resetData">Reset defaults</button>
 
-    <h3>Add Route</h3>
-    <label>From<input id="routeFrom"/></label>
-    <label>To<input id="routeTo"/></label>
-    <label>Airline<select id="routeAirline"></select></label>
-    <label>Duration<input id="routeDuration" placeholder="1h 20m"/></label>
-    <button class="btn" id="addRoute">Add route</button>
-    <ul class="list" id="routeList"></ul>
-  </section>
+      <h3>Add Airline</h3>
+      <label>Name<input id="airlineName" /></label>
+      <label>Style<input id="airlineStyle" /></label>
+      <label>Callsign<input id="airlineCallsign" /></label>
+      <label>Description<textarea id="airlineDescription" rows="2"></textarea></label>
+      <label>Bases (comma)<input id="airlineBases" /></label>
+      <label>Fleet (comma)<input id="airlineFleet" /></label>
+      <button class="btn" id="addAirline">Add airline</button>
+      <ul class="list" id="airlineList"></ul>
 
-  <section class="panel">
-    <h3>Full JSON Editor (change everything)</h3>
-    <p class="muted">You can edit the complete website data model here.</p>
-    <textarea id="rawJson" rows="32"></textarea>
-    <p id="jsonStatus" class="muted"></p>
-    <button class="btn" id="saveJson">Save JSON</button>
-  </section>
-</main>
-<script src="app.js"></script><script>window.vcat.setupAdminPage();</script>
+      <h3>Add Route</h3>
+      <label>From<input id="routeFrom" /></label>
+      <label>To<input id="routeTo" /></label>
+      <label>Airline<select id="routeAirline"></select></label>
+      <label>Duration<input id="routeDuration" placeholder="1h 20m" /></label>
+      <button class="btn" id="addRoute">Add route</button>
+      <ul class="list" id="routeList"></ul>
+    </section>
+
+    <section class="panel">
+      <h3>Full JSON Editor (change everything)</h3>
+      <p class="muted">Edit full site data model directly.</p>
+      <textarea id="rawJson" rows="32"></textarea>
+      <p id="jsonStatus" class="muted"></p>
+      <button class="btn" id="saveJson">Save JSON</button>
+      <button class="btn alt" id="copyJson">Copy JSON</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+  <script>window.vcat.setupAdminPage();</script>
 </body>
-
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Admin | Copenhagen AirTaxi Virtual</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header class="top-nav">
-      <div class="container nav-inner">
-        <h1 class="brand">Admin Panel</h1>
-        <div class="nav-actions">
-          <a class="btn secondary" href="index.html">Public Site</a>
-        </div>
-      </div>
-    </header>
-
-    <main class="container admin-layout" id="adminRoot">
-      <section class="panel">
-        <h3>General Website Content</h3>
-        <label>Website name <input id="siteNameInput" /></label>
-        <label>Tagline <input id="taglineInput" /></label>
-        <label>About text <textarea id="aboutInput" rows="5"></textarea></label>
-        <label>Contact email <input id="contactInput" /></label>
-        <div class="inline">
-          <button class="btn" id="saveGeneral">Save general content</button>
-          <button class="btn secondary" id="resetData">Reset default data</button>
-        </div>
-      </section>
-
-      <section class="panel">
-        <h3>Add Airline</h3>
-        <label>Name <input id="airlineName" placeholder="e.g. Airseven" /></label>
-        <label>Description <textarea id="airlineDescription" rows="3"></textarea></label>
-        <label>Bases (comma-separated ICAOs) <input id="airlineBases" placeholder="EDDM, ESGJ, ESSA" /></label>
-        <label>Fleet (comma-separated) <input id="airlineFleet" placeholder="A320, B737-800" /></label>
-        <button class="btn" id="addAirline">Add airline</button>
-        <div id="adminAirlineList" class="grid section"></div>
-      </section>
-
-      <section class="panel">
-        <h3>Add Route</h3>
-        <div class="inline">
-          <label>From <input id="routeFrom" placeholder="EKCH" /></label>
-          <label>To <input id="routeTo" placeholder="ESSA" /></label>
-        </div>
-        <label>Airline
-          <select id="routeAirline"></select>
-        </label>
-        <button class="btn" id="addRoute">Add route</button>
-        <h4>Current routes</h4>
-        <ul class="list" id="adminRouteList"></ul>
-      </section>
-    </main>
-
-    <script src="app.js"></script>
-    <script>
-      window.vcat.setupAdminPage();
-    </script>
-  </body>
- main
 </html>

@@ -1,87 +1,69 @@
 <!doctype html>
 <html lang="en">
-codex/create-website-for-copenhagen-airtaxi-virtual-mqxcvr
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Copenhagen AirTaxi Virtual</title><link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Copenhagen AirTaxi Virtual</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body data-page="home">
-  <header class="top-nav"><div class="container nav-inner">
-    <h2 class="brand" data-bind="siteName"></h2>
-    <nav>
-      <a href="index.html">Home</a><a href="airlines.html">Airlines</a><a href="routes.html">Routes</a><a href="operations.html">Operations</a><a href="community.html">Community</a>
-    </nav></div></header>
-  <main class="container">
-    <section class="hero"><article class="hero-panel"><h1 id="heroTitle"></h1><p id="heroSlogan" class="muted"></p><p id="heroIntro"></p><div class="stats" id="quickStats"></div></article></section>
-    <section><h2>Latest News</h2><div class="grid" id="newsGrid"></div></section>
-  </main>
-  <footer class="container footer">Copenhagen AirTaxi Virtual group network <a class="admin-discreet" href="admin.html" title="Operations Console">ops</a></footer>
-  <script src="app.js"></script><script>window.vcat.renderByPage();</script>
-</body>
-=======
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Copenhagen AirTaxi Virtual</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header class="top-nav">
-      <div class="container nav-inner">
-        <h1 class="brand" id="siteName">Copenhagen AirTaxi Virtual</h1>
-        <div class="nav-actions">
-          <a class="btn secondary" href="#airlines">Airlines</a>
-          <a class="btn" href="admin.html">Admin</a>
-        </div>
+  <header class="top-nav">
+    <div class="nav-shell">
+      <div class="nav-left">
+        <span>☰ Menu</span>
+        <a class="nav-link" href="airlines.html">Airlines</a>
+        <a class="nav-link" href="routes.html">Routes</a>
       </div>
-    </header>
+      <h1 class="brand" data-bind="siteName">vCAT</h1>
+      <div class="nav-right">
+        <a class="nav-link" href="operations.html">Operations</a>
+        <a class="nav-link" href="community.html">Community</a>
+      </div>
+    </div>
+  </header>
 
-    <main class="container">
-      <section class="hero">
-        <div class="hero-card">
-          <h2 id="heroTitle">Copenhagen AirTaxi Virtual</h2>
-          <p id="heroTagline"></p>
-          <div class="stats">
-            <div class="stat">
-              <div class="stat-label">Airlines</div>
-              <div class="stat-value" id="countAirlines">0</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Base Airports</div>
-              <div class="stat-value" id="countBases">0</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Published Routes</div>
-              <div class="stat-value" id="countRoutes">0</div>
-            </div>
-          </div>
-        </div>
-      </section>
+  <section class="hero-home">
+    <div class="hero-content">
+      <div>
+        <p class="eyebrow">Copenhagen AirTaxi Virtual</p>
+        <h2 class="hero-title" id="heroTitle"></h2>
+        <p class="hero-tag" id="heroSlogan"></p>
+        <p class="hero-tag" id="heroIntro"></p>
+        <a class="hero-cta" href="airlines.html">Discover More</a>
+      </div>
+      <div class="scroll-hint">Scroll</div>
+    </div>
+  </section>
 
-      <section class="section" id="airlines">
-        <h3>Our Airlines</h3>
-        <p class="section-subtitle">Operations, hubs, and fleet snapshots.</p>
-        <div class="grid" id="airlinesContainer"></div>
-      </section>
+  <section class="lux-section">
+    <div class="container">
+      <p class="section-title">Live Group Overview</p>
+      <div class="stats" id="quickStats"></div>
+    </div>
+  </section>
 
-      <section class="section">
-        <h3>Active Routes</h3>
-        <ul class="card list" id="routeList"></ul>
-      </section>
+  <section class="lux-section">
+    <div class="container">
+      <p class="section-title">Signature Carriers</p>
+      <p class="section-copy">Two distinct airline experiences under one premium virtual group.</p>
+      <div class="grid" id="featuredAirlines"></div>
+    </div>
+  </section>
 
-      <section class="section">
-        <h3>About & Contact</h3>
-        <div class="card">
-          <p id="aboutText"></p>
-          <p><strong>Operations contact:</strong> <span id="contactEmail"></span></p>
-        </div>
-      </section>
-    </main>
+  <section class="lux-section">
+    <div class="container">
+      <p class="section-title">Latest News</p>
+      <p class="section-copy">Operations updates and network expansion announcements.</p>
+      <div class="grid" id="newsGrid"></div>
+    </div>
+  </section>
 
-    <script src="app.js"></script>
-    <script>
-      window.vcat.renderPublicSite(window.vcat.loadData());
-    </script>
-  </body>
-main
+  <footer class="container footer">
+    Copenhagen AirTaxi Virtual group network
+    <a class="admin-discreet" href="admin.html" title="Operations Console">ops</a>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>window.vcat.renderByPage();</script>
+</body>
 </html>

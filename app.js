@@ -1,5 +1,4 @@
-DEFAULT_DATA = {
- codex/create-website-for-copenhagen-airtaxi-virtual-mqxcvr
+const DEFAULT_DATA = {
   brand: {
     name: "Copenhagen AirTaxi Virtual",
     slogan: "Precision. Personality. Scandinavian skies.",
@@ -14,7 +13,7 @@ DEFAULT_DATA = {
       style: "Premium Regional",
       description: "Regional and executive-focused operation with clean procedures and high dispatch reliability.",
       bases: ["EDDM", "ESGJ", "ESSA"],
-      fleet: ["B737-800"],
+      fleet: ["C208B", "PC-12", "B737-800"],
       callsign: "AIRSEVEN"
     },
     {
@@ -22,7 +21,7 @@ DEFAULT_DATA = {
       style: "Low-cost Leisure",
       description: "Colorful, high-energy low-cost network connecting key city pairs and holiday routes.",
       bases: ["EDDF", "EKCH", "ESGG"],
-      fleet: [B77W", "B748", "A333"],
+      fleet: ["A320neo", "E195", "B737-700"],
       callsign: "POPAIR"
     }
   ],
@@ -62,22 +61,14 @@ function mergeDeep(base, patch) {
   if (typeof patch !== "object" || patch === null) patch = {};
 
   const out = { ...base };
-  for (const key of Object.keys(base)) {
-    out[key] = mergeDeep(base[key], patch[key]);
-  }
-  for (const key of Object.keys(patch)) {
-    if (!(key in out)) out[key] = patch[key];
-  }
+  for (const key of Object.keys(base)) out[key] = mergeDeep(base[key], patch[key]);
+  for (const key of Object.keys(patch)) if (!(key in out)) out[key] = patch[key];
   return out;
 }
 
-function toStringSafe(value, fallback = "") {
-  return typeof value === "string" ? value : fallback;
-}
-
-function toArraySafe(value) {
-  return Array.isArray(value) ? value : [];
-}
+const byId = (id) => document.getElementById(id);
+const toStringSafe = (value, fallback = "") => (typeof value === "string" ? value : fallback);
+const toArraySafe = (value) => (Array.isArray(value) ? value : []);
 
 function normalizeData(data) {
   const merged = mergeDeep(cloneValue(DEFAULT_DATA), data || {});
@@ -127,63 +118,19 @@ function normalizeData(data) {
 function loadData() {
   const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("vcatData");
   if (!raw) return cloneValue(DEFAULT_DATA);
-
   try {
     return normalizeData(JSON.parse(raw));
   } catch {
     return cloneValue(DEFAULT_DATA);
-
-  siteName: "Copenhagen AirTaxi Virtual",
-  tagline: "Fly smart routes across Europe with style, reliability and Scandinavian precision.",
-  about:
-    "Copenhagen AirTaxi Virtual is a modern VA with two unique airline brands. We focus on realistic operations, friendly community flying, and clear progression for every pilot.",
-  airlines: [
-    {
-      name: "Airseven",
-      description: "Regional and business routes with efficient daily operations.",
-      bases: ["EDDM", "ESGJ", "ESSA"],
-      fleet: ["C208B", "PC-12", "B737-800"]
-    },
-    {
-      name: "Pop!",
-      description: "Energetic low-cost network connecting major and secondary cities.",
-      bases: ["EDDF", "EKCH", "ESGG"],
-      fleet: ["A320neo", "E195", "B737-700"]
-    }
-  ],
-  routes: [
-    { from: "EKCH", to: "ESSA", airline: "Pop!" },
-    { from: "EDDM", to: "ESGJ", airline: "Airseven" },
-    { from: "EDDF", to: "ESGG", airline: "Pop!" }
-  ],
-  contactEmail: "ops@copenhagen-airtaxi-virtual.com"
-};
-
-const STORAGE_KEY = "vcatData";
-
-function loadData() {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) {
-    return structuredClone(DEFAULT_DATA);
-  }
-  try {
-    return { ...structuredClone(DEFAULT_DATA), ...JSON.parse(raw) };
-  } catch {
-    return structuredClone(DEFAULT_DATA);
- main
   }
 }
 
 function saveData(data) {
- codex/create-website-for-copenhagen-airtaxi-virtual-mqxcvr
   localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizeData(data)));
 }
 
-const byId = (id) => document.getElementById(id);
-
 function renderNav(data) {
-  const siteNameNodes = document.querySelectorAll('[data-bind="siteName"]');
-  siteNameNodes.forEach((el) => {
+  document.querySelectorAll('[data-bind="siteName"]').forEach((el) => {
     el.textContent = data.brand.name;
   });
 }
@@ -192,6 +139,7 @@ function renderHome(data) {
   byId("heroTitle").textContent = data.brand.name;
   byId("heroSlogan").textContent = data.brand.slogan;
   byId("heroIntro").textContent = data.brand.shortIntro;
+
   byId("quickStats").innerHTML = `
     <article><strong>${data.airlines.length}</strong><span>Airline Brands</span></article>
     <article><strong>${data.routes.length}</strong><span>Live Routes</span></article>
@@ -201,6 +149,15 @@ function renderHome(data) {
   byId("newsGrid").innerHTML = data.news
     .map((item) => `<article class="card"><h3>${item.title}</h3><p>${item.text}</p></article>`)
     .join("");
+
+  const featured = byId("featuredAirlines");
+  if (featured) {
+    featured.innerHTML = data.airlines
+      .map(
+        (a) => `<article class="card"><h3>${a.name}</h3><p class="muted">${a.style} · ${a.callsign}</p><p>${a.description}</p></article>`
+      )
+      .join("");
+  }
 }
 
 function renderAirlines(data) {
@@ -223,13 +180,52 @@ function renderAirlines(data) {
   );
 }
 
-function renderRoutes(data) {
+function renderRouteRows(routes) {
   const body = byId("routeRows");
   if (!body) return;
-
-  body.innerHTML = data.routes
+  body.innerHTML = routes
     .map((r) => `<tr><td>${r.from}</td><td>${r.to}</td><td>${r.airline}</td><td>${r.duration || "TBD"}</td></tr>`)
     .join("");
+}
+
+function renderRoutes(data) {
+  const routes = data.routes;
+  renderRouteRows(routes);
+
+  const fromFilter = byId("routeFilterFrom");
+  const toFilter = byId("routeFilterTo");
+  const airlineFilter = byId("routeFilterAirline");
+  const resetBtn = byId("routeFilterReset");
+  if (!fromFilter || !toFilter || !airlineFilter || !resetBtn) return;
+
+  airlineFilter.innerHTML = ["<option value=''>All airlines</option>"]
+    .concat(data.airlines.map((a) => `<option value="${a.name}">${a.name}</option>`))
+    .join("");
+
+  const applyFilters = () => {
+    const from = fromFilter.value.trim().toUpperCase();
+    const to = toFilter.value.trim().toUpperCase();
+    const airline = airlineFilter.value.trim();
+
+    const filtered = routes.filter((r) => {
+      const fromMatch = !from || r.from.includes(from);
+      const toMatch = !to || r.to.includes(to);
+      const airlineMatch = !airline || r.airline === airline;
+      return fromMatch && toMatch && airlineMatch;
+    });
+
+    renderRouteRows(filtered);
+  };
+
+  fromFilter.oninput = applyFilters;
+  toFilter.oninput = applyFilters;
+  airlineFilter.onchange = applyFilters;
+  resetBtn.onclick = () => {
+    fromFilter.value = "";
+    toFilter.value = "";
+    airlineFilter.value = "";
+    renderRouteRows(routes);
+  };
 }
 
 function renderOperations(data) {
@@ -293,6 +289,7 @@ function setupAdminPage() {
     data.brand.discord = byId("discordInput").value.trim();
     saveData(data);
     data = loadData();
+    jsonStatus.textContent = "Brand saved.";
     paint();
   };
 
@@ -300,8 +297,7 @@ function setupAdminPage() {
     const name = byId("airlineName").value.trim();
     if (!name) return;
 
-    const exists = data.airlines.some((a) => a.name.toLowerCase() === name.toLowerCase());
-    if (exists) {
+    if (data.airlines.some((a) => a.name.toLowerCase() === name.toLowerCase())) {
       jsonStatus.textContent = "Airline already exists.";
       return;
     }
@@ -364,14 +360,22 @@ function setupAdminPage() {
 
   byId("saveJson").onclick = () => {
     try {
-      const parsed = JSON.parse(rawJson.value);
-      data = normalizeData(parsed);
+      data = normalizeData(JSON.parse(rawJson.value));
       saveData(data);
       data = loadData();
       jsonStatus.textContent = "JSON saved.";
       paint();
     } catch {
       jsonStatus.textContent = "Invalid JSON.";
+    }
+  };
+
+  byId("copyJson").onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(rawJson.value);
+      jsonStatus.textContent = "JSON copied to clipboard.";
+    } catch {
+      jsonStatus.textContent = "Could not copy JSON in this browser.";
     }
   };
 
@@ -387,184 +391,3 @@ function setupAdminPage() {
 }
 
 window.vcat = { loadData, saveData, renderByPage, setupAdminPage };
-=======
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-function byId(id) {
-  return document.getElementById(id);
-}
-
-function renderPublicSite(data) {
-  byId("siteName").textContent = data.siteName;
-  byId("heroTitle").textContent = data.siteName;
-  byId("heroTagline").textContent = data.tagline;
-  byId("aboutText").textContent = data.about;
-  byId("contactEmail").textContent = data.contactEmail;
-
-  const airlinesContainer = byId("airlinesContainer");
-  airlinesContainer.innerHTML = "";
-
-  data.airlines.forEach((airline) => {
-    const card = document.createElement("article");
-    card.className = "card";
-    card.innerHTML = `
-      <h4>${airline.name}</h4>
-      <p>${airline.description || "No description yet."}</p>
-      <p><strong>Bases:</strong> ${airline.bases.join(", ") || "-"}</p>
-      <div>${airline.fleet.map((f) => `<span class="tag">${f}</span>`).join("")}</div>
-    `;
-    airlinesContainer.appendChild(card);
-  });
-
-  const routeList = byId("routeList");
-  routeList.innerHTML = "";
-  data.routes.forEach((route) => {
-    const item = document.createElement("li");
-    item.textContent = `${route.from} → ${route.to} (${route.airline})`;
-    routeList.appendChild(item);
-  });
-
-  byId("countAirlines").textContent = data.airlines.length;
-  byId("countBases").textContent = data.airlines.reduce((sum, a) => sum + a.bases.length, 0);
-  byId("countRoutes").textContent = data.routes.length;
-}
-
-function setupAdminPage() {
-  const adminRoot = byId("adminRoot");
-  if (!adminRoot) {
-    return;
-  }
-
-  let data = loadData();
-
-  const siteNameInput = byId("siteNameInput");
-  const taglineInput = byId("taglineInput");
-  const aboutInput = byId("aboutInput");
-  const contactInput = byId("contactInput");
-  const airlineList = byId("adminAirlineList");
-  const routeTable = byId("adminRouteList");
-  const routeAirlineSelect = byId("routeAirline");
-
-  function syncGeneralForm() {
-    siteNameInput.value = data.siteName;
-    taglineInput.value = data.tagline;
-    aboutInput.value = data.about;
-    contactInput.value = data.contactEmail;
-  }
-
-  function syncAirlineSelector() {
-    routeAirlineSelect.innerHTML = data.airlines
-      .map((airline) => `<option value="${airline.name}">${airline.name}</option>`)
-      .join("");
-  }
-
-  function renderAirlinesAdmin() {
-    airlineList.innerHTML = "";
-    data.airlines.forEach((airline, index) => {
-      const item = document.createElement("div");
-      item.className = "card";
-      item.innerHTML = `
-        <h4>${airline.name}</h4>
-        <p class="tiny">Bases: ${airline.bases.join(", ") || "-"}</p>
-        <p class="tiny">Fleet: ${airline.fleet.join(", ") || "-"}</p>
-        <button class="btn danger" data-remove-airline="${index}">Delete airline</button>
-      `;
-      airlineList.appendChild(item);
-    });
-  }
-
-  function renderRoutesAdmin() {
-    routeTable.innerHTML = "";
-    data.routes.forEach((route, index) => {
-      const line = document.createElement("li");
-      line.innerHTML = `${route.from} → ${route.to} <span class="tiny">(${route.airline})</span>
-        <button class="btn danger" style="margin-left:.5rem" data-remove-route="${index}">Delete</button>`;
-      routeTable.appendChild(line);
-    });
-  }
-
-  function commit() {
-    saveData(data);
-    syncAirlineSelector();
-    renderAirlinesAdmin();
-    renderRoutesAdmin();
-  }
-
-  byId("saveGeneral").addEventListener("click", () => {
-    data.siteName = siteNameInput.value.trim() || DEFAULT_DATA.siteName;
-    data.tagline = taglineInput.value.trim();
-    data.about = aboutInput.value.trim();
-    data.contactEmail = contactInput.value.trim();
-    commit();
-    alert("General content saved.");
-  });
-
-  byId("addAirline").addEventListener("click", () => {
-    const name = byId("airlineName").value.trim();
-    if (!name) return;
-    const description = byId("airlineDescription").value.trim();
-    const bases = byId("airlineBases").value
-      .split(",")
-      .map((s) => s.trim().toUpperCase())
-      .filter(Boolean);
-    const fleet = byId("airlineFleet").value
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
-
-    data.airlines.push({ name, description, bases, fleet });
-
-    byId("airlineName").value = "";
-    byId("airlineDescription").value = "";
-    byId("airlineBases").value = "";
-    byId("airlineFleet").value = "";
-    commit();
-  });
-
-  airlineList.addEventListener("click", (event) => {
-    const target = event.target;
-    if (!(target instanceof HTMLElement)) return;
-    const removeIndex = target.dataset.removeAirline;
-    if (removeIndex === undefined) return;
-
-    const index = Number(removeIndex);
-    const removed = data.airlines[index];
-    data.airlines.splice(index, 1);
-    data.routes = data.routes.filter((route) => route.airline !== removed.name);
-    commit();
-  });
-
-  byId("addRoute").addEventListener("click", () => {
-    const from = byId("routeFrom").value.trim().toUpperCase();
-    const to = byId("routeTo").value.trim().toUpperCase();
-    const airline = routeAirlineSelect.value;
-    if (!from || !to || !airline) return;
-    data.routes.push({ from, to, airline });
-    byId("routeFrom").value = "";
-    byId("routeTo").value = "";
-    commit();
-  });
-
-  routeTable.addEventListener("click", (event) => {
-    const target = event.target;
-    if (!(target instanceof HTMLElement)) return;
-    const removeIndex = target.dataset.removeRoute;
-    if (removeIndex === undefined) return;
-
-    data.routes.splice(Number(removeIndex), 1);
-    commit();
-  });
-
-  byId("resetData").addEventListener("click", () => {
-    data = structuredClone(DEFAULT_DATA);
-    syncGeneralForm();
-    commit();
-  });
-
-  syncGeneralForm();
-  commit();
-}
-
-window.vcat = { loadData, saveData, renderPublicSite, setupAdminPage };
- main
