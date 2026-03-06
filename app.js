@@ -49,6 +49,9 @@ const DEFAULT_DATA = {
 };
 
 const STORAGE_KEY = "vcatDataV2";
+const byId = (id) => document.getElementById(id);
+const toStringSafe = (value, fallback = "") => (typeof value === "string" ? value : fallback);
+const toArraySafe = (value) => (Array.isArray(value) ? value : []);
 
 function cloneValue(value) {
   if (typeof structuredClone === "function") return structuredClone(value);
@@ -65,10 +68,6 @@ function mergeDeep(base, patch) {
   for (const key of Object.keys(patch)) if (!(key in out)) out[key] = patch[key];
   return out;
 }
-
-const byId = (id) => document.getElementById(id);
-const toStringSafe = (value, fallback = "") => (typeof value === "string" ? value : fallback);
-const toArraySafe = (value) => (Array.isArray(value) ? value : []);
 
 function normalizeData(data) {
   const merged = mergeDeep(cloneValue(DEFAULT_DATA), data || {});
@@ -93,7 +92,6 @@ function normalizeData(data) {
     .filter((a) => a.name);
 
   const validAirlineNames = new Set(merged.airlines.map((a) => a.name));
-
   merged.routes = toArraySafe(merged.routes)
     .map((r) => ({
       from: toStringSafe(r?.from).trim().toUpperCase(),
@@ -129,6 +127,46 @@ function saveData(data) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizeData(data)));
 }
 
+function initMenu() {
+  const toggle = document.querySelector("[data-menu-toggle]");
+  const menu = byId("siteMenu");
+  if (!toggle || !menu) return;
+
+  const closeMenu = () => {
+    document.body.classList.remove("menu-open");
+    toggle.setAttribute("aria-expanded", "false");
+  };
+
+  toggle.addEventListener("click", () => {
+    const open = document.body.classList.toggle("menu-open");
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+
+  menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMenu));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
+  });
+}
+
+function initRevealAnimations() {
+  const nodes = document.querySelectorAll(".reveal");
+  if (!nodes.length || typeof IntersectionObserver !== "function") return;
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  nodes.forEach((node) => io.observe(node));
+}
+
 function renderNav(data) {
   document.querySelectorAll('[data-bind="siteName"]').forEach((el) => {
     el.textContent = data.brand.name;
@@ -141,20 +179,20 @@ function renderHome(data) {
   byId("heroIntro").textContent = data.brand.shortIntro;
 
   byId("quickStats").innerHTML = `
-    <article><strong>${data.airlines.length}</strong><span>Airline Brands</span></article>
-    <article><strong>${data.routes.length}</strong><span>Live Routes</span></article>
-    <article><strong>${new Set(data.airlines.flatMap((a) => a.bases)).size}</strong><span>Base Airports</span></article>
+    <article class="reveal"><strong>${data.airlines.length}</strong><span>Airline Brands</span></article>
+    <article class="reveal"><strong>${data.routes.length}</strong><span>Live Routes</span></article>
+    <article class="reveal"><strong>${new Set(data.airlines.flatMap((a) => a.bases)).size}</strong><span>Base Airports</span></article>
   `;
 
   byId("newsGrid").innerHTML = data.news
-    .map((item) => `<article class="card"><h3>${item.title}</h3><p>${item.text}</p></article>`)
+    .map((item) => `<article class="card reveal"><h3>${item.title}</h3><p>${item.text}</p></article>`)
     .join("");
 
   const featured = byId("featuredAirlines");
   if (featured) {
     featured.innerHTML = data.airlines
       .map(
-        (a) => `<article class="card"><h3>${a.name}</h3><p class="muted">${a.style} · ${a.callsign}</p><p>${a.description}</p></article>`
+        (a) => `<article class="card reveal"><h3>${a.name}</h3><p class="muted">${a.style} · ${a.callsign}</p><p>${a.description}</p></article>`
       )
       .join("");
   }
@@ -167,7 +205,7 @@ function renderAirlines(data) {
   host.replaceChildren(
     ...data.airlines.map((airline) => {
       const el = document.createElement("article");
-      el.className = "card airline";
+      el.className = "card airline reveal";
       el.innerHTML = `
         <h3>${airline.name}</h3>
         <p class="muted">${airline.style} · Callsign ${airline.callsign}</p>
@@ -178,6 +216,29 @@ function renderAirlines(data) {
       return el;
     })
   );
+}
+
+function renderFleet(data) {
+  const host = byId("fleetGrid");
+  if (!host) return;
+  const rows = [];
+  data.airlines.forEach((a) => {
+    a.fleet.forEach((aircraft) => {
+      rows.push(`<article class="card reveal"><h3>${aircraft}</h3><p class="muted">${a.name}</p><p>Operational in ${a.bases.join(", ")}</p></article>`);
+    });
+  });
+  host.innerHTML = rows.join("");
+}
+
+function renderDestinations(data) {
+  const host = byId("destinationGrid");
+  if (!host) return;
+  host.innerHTML = data.routes
+    .map(
+      (r) =>
+        `<article class="card reveal"><h3>${r.from} → ${r.to}</h3><p class="muted">${r.airline}</p><p>Block time: ${r.duration || "TBD"}</p></article>`
+    )
+    .join("");
 }
 
 function renderRouteRows(routes) {
@@ -207,14 +268,14 @@ function renderRoutes(data) {
     const to = toFilter.value.trim().toUpperCase();
     const airline = airlineFilter.value.trim();
 
-    const filtered = routes.filter((r) => {
-      const fromMatch = !from || r.from.includes(from);
-      const toMatch = !to || r.to.includes(to);
-      const airlineMatch = !airline || r.airline === airline;
-      return fromMatch && toMatch && airlineMatch;
-    });
-
-    renderRouteRows(filtered);
+    renderRouteRows(
+      routes.filter((r) => {
+        const fromMatch = !from || r.from.includes(from);
+        const toMatch = !to || r.to.includes(to);
+        const airlineMatch = !airline || r.airline === airline;
+        return fromMatch && toMatch && airlineMatch;
+      })
+    );
   };
 
   fromFilter.oninput = applyFilters;
@@ -231,10 +292,8 @@ function renderRoutes(data) {
 function renderOperations(data) {
   const list = byId("opsHighlights");
   if (list) list.innerHTML = data.operations.highlights.map((h) => `<li>${h}</li>`).join("");
-
   const training = byId("trainingText");
   if (training) training.textContent = data.operations.training;
-
   const contact = byId("contactLine");
   if (contact) contact.textContent = `${data.brand.contactEmail} · ${data.brand.discord}`;
 }
@@ -242,12 +301,17 @@ function renderOperations(data) {
 function renderByPage() {
   const data = loadData();
   renderNav(data);
+  initMenu();
 
   const page = document.body.dataset.page;
   if (page === "home") renderHome(data);
   if (page === "airlines") renderAirlines(data);
+  if (page === "fleet") renderFleet(data);
+  if (page === "destinations") renderDestinations(data);
   if (page === "routes") renderRoutes(data);
   if (page === "operations") renderOperations(data);
+
+  initRevealAnimations();
 }
 
 function setupAdminPage() {

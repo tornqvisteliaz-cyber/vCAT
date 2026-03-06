@@ -62,6 +62,65 @@ a { color: inherit; }
 }
 .nav-link:hover { border-bottom-color: rgba(255,255,255,0.9); }
 
+.menu-btn {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.45);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: transform .25s ease, background .25s ease;
+}
+.menu-btn:hover { background: rgba(255,255,255,0.12); transform: translateY(-1px); }
+
+.site-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: min(360px, 88vw);
+  height: 100svh;
+  z-index: 30;
+  background: rgba(7, 10, 16, 0.96);
+  border-right: 1px solid rgba(255,255,255,0.2);
+  display: grid;
+  align-content: start;
+  gap: 0.2rem;
+  padding: 5.2rem 1.1rem 1.2rem;
+  transform: translateX(-105%);
+  transition: transform .35s ease;
+}
+.site-menu a {
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  border: 1px solid transparent;
+  padding: 0.7rem;
+}
+.site-menu a:hover { border-color: rgba(255,255,255,0.35); }
+body.menu-open .site-menu { transform: translateX(0); }
+body.menu-open::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 20;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px) scale(0.985);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+
 .hero-content {
   position: relative;
   min-height: 100svh;
@@ -170,9 +229,9 @@ a { color: inherit; }
   border-bottom: 1px solid rgba(255,255,255,0.12);
   padding: 1rem 0;
 }
-.page-top .brand { font-size: 1.2rem; text-align: left; font-family: inherit; }
+.page-top .brand { font-size: 1.2rem; text-align: center; font-family: inherit; }
 .page-top nav { display: flex; gap: 0.9rem; flex-wrap: wrap; }
-.page-top-wrap { display:flex; justify-content:space-between; align-items:center; gap:1rem; }
+.page-top-wrap { display:grid; grid-template-columns: auto 1fr auto; align-items:center; gap:1rem; }
 .page-main { padding: 2rem 0 4rem; }
 
 .footer {
@@ -248,7 +307,7 @@ input, textarea, select {
 @media (max-width: 900px) {
   .nav-shell { grid-template-columns: 1fr; gap: 0.6rem; text-align: center; }
   .nav-left, .nav-right { justify-content: center; }
-  .page-top-wrap { flex-direction: column; align-items: flex-start; }
+  .page-top-wrap { grid-template-columns: 1fr; }
   .admin-wrap { grid-template-columns: 1fr; }
   .route-filters { grid-template-columns: 1fr; }
 }

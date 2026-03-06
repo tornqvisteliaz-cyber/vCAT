@@ -7,36 +7,18 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body data-page="operations" class="page-shell">
-  <header class="page-top">
-    <div class="container page-top-wrap">
-      <h2 class="brand" data-bind="siteName"></h2>
-      <nav>
-        <a class="nav-link" href="index.html">Home</a>
-        <a class="nav-link" href="airlines.html">Airlines</a>
-        <a class="nav-link" href="routes.html">Routes</a>
-        <a class="nav-link" href="operations.html">Operations</a>
-        <a class="nav-link" href="community.html">Community</a>
-      </nav>
-    </div>
-  </header>
+  <header class="page-top"><div class="container page-top-wrap"><button class="menu-btn" data-menu-toggle aria-expanded="false">☰ Menu</button><h2 class="brand" data-bind="siteName"></h2><a class="nav-link" href="admin.html">Admin</a></div></header>
+  <aside id="siteMenu" class="site-menu"><a href="index.html">Home</a><a href="airlines.html">Airlines</a><a href="fleet.html">Fleet</a><a href="destinations.html">Destinations</a><a href="routes.html">Routes</a><a href="operations.html">Operations</a><a href="community.html">Community</a><a href="admin.html">Admin</a></aside>
 
   <main class="container page-main">
-    <p class="section-title">Operations Center</p>
+    <p class="section-title reveal">Operations Center</p>
     <div class="grid">
-      <article class="card">
-        <h3>Highlights</h3>
-        <ul id="opsHighlights"></ul>
-      </article>
-      <article class="card">
-        <h3>Academy & Training</h3>
-        <p id="trainingText"></p>
-      </article>
+      <article class="card reveal"><h3>Highlights</h3><ul id="opsHighlights"></ul></article>
+      <article class="card reveal"><h3>Academy & Training</h3><p id="trainingText"></p></article>
     </div>
   </main>
 
   <footer class="container footer">Operations support: <span id="contactLine"></span> <a class="admin-discreet" href="admin.html">ops</a></footer>
-
-  <script src="app.js"></script>
-  <script>window.vcat.renderByPage();</script>
+  <script src="app.js"></script><script>window.vcat.renderByPage();</script>
 </body>
 </html>
