@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Copenhagen AirTaxi Virtual</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="home">
+  <header class="top-nav">
+    <div class="nav-shell">
+      <div class="nav-left">
+        <span>☰ Menu</span>
+        <a class="nav-link" href="airlines.html">Airlines</a>
+        <a class="nav-link" href="routes.html">Routes</a>
+      </div>
+      <h1 class="brand" data-bind="siteName">vCAT</h1>
+      <div class="nav-right">
+        <a class="nav-link" href="operations.html">Operations</a>
+        <a class="nav-link" href="community.html">Community</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero-home">
+    <div class="hero-content">
+      <div>
+        <p class="eyebrow">Copenhagen AirTaxi Virtual</p>
+        <h2 class="hero-title" id="heroTitle"></h2>
+        <p class="hero-tag" id="heroSlogan"></p>
+        <p class="hero-tag" id="heroIntro"></p>
+        <a class="hero-cta" href="airlines.html">Discover More</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="lux-section">
+    <div class="container">
+      <p class="section-title">Live Group Overview</p>
+      <div class="stats" id="quickStats"></div>
+    </div>
+  </section>
+
+  <section class="lux-section">
+    <div class="container">
+      <p class="section-title">Latest News</p>
+      <p class="section-copy">Operations updates and network expansion announcements.</p>
+      <div class="grid" id="newsGrid"></div>
+    </div>
+  </section>
+
+  <footer class="container footer">
+    Copenhagen AirTaxi Virtual group network
+    <a class="admin-discreet" href="admin.html" title="Operations Console">ops</a>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>window.vcat.renderByPage();</script>
+</body>
+</html>

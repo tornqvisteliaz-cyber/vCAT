@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Airlines | vCAT</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="airlines" class="page-shell">
+  <header class="page-top">
+    <div class="container page-top-wrap">
+      <h2 class="brand" data-bind="siteName"></h2>
+      <nav>
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="airlines.html">Airlines</a>
+        <a class="nav-link" href="routes.html">Routes</a>
+        <a class="nav-link" href="operations.html">Operations</a>
+        <a class="nav-link" href="community.html">Community</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-main">
+    <p class="section-title">Our Airline Brands</p>
+    <p class="section-copy">Different vibes, same quality standards and dispatch discipline.</p>
+    <div class="grid" id="airlineCards"></div>
+  </main>
+
+  <footer class="container footer">
+    Fleet and base data synced from operations console.
+    <a class="admin-discreet" href="admin.html">ops</a>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>window.vcat.renderByPage();</script>
+</body>
+</html>
