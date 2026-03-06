@@ -23,6 +23,12 @@
   <main class="container page-main">
     <p class="section-title">Network & Timetable</p>
     <p class="section-copy">Published routes for Airseven and Pop! with current block times.</p>
+    <div class="route-filters">
+      <input id="routeFilterFrom" placeholder="Filter from (ICAO)" />
+      <input id="routeFilterTo" placeholder="Filter to (ICAO)" />
+      <select id="routeFilterAirline"></select>
+      <button id="routeFilterReset" class="btn alt">Reset</button>
+    </div>
     <table class="table">
       <thead><tr><th>From</th><th>To</th><th>Airline</th><th>Block Time</th></tr></thead>
       <tbody id="routeRows"></tbody>

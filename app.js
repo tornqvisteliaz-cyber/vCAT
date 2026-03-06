@@ -61,22 +61,14 @@ function mergeDeep(base, patch) {
   if (typeof patch !== "object" || patch === null) patch = {};
 
   const out = { ...base };
-  for (const key of Object.keys(base)) {
-    out[key] = mergeDeep(base[key], patch[key]);
-  }
-  for (const key of Object.keys(patch)) {
-    if (!(key in out)) out[key] = patch[key];
-  }
+  for (const key of Object.keys(base)) out[key] = mergeDeep(base[key], patch[key]);
+  for (const key of Object.keys(patch)) if (!(key in out)) out[key] = patch[key];
   return out;
 }
 
-function toStringSafe(value, fallback = "") {
-  return typeof value === "string" ? value : fallback;
-}
-
-function toArraySafe(value) {
-  return Array.isArray(value) ? value : [];
-}
+const byId = (id) => document.getElementById(id);
+const toStringSafe = (value, fallback = "") => (typeof value === "string" ? value : fallback);
+const toArraySafe = (value) => (Array.isArray(value) ? value : []);
 
 function normalizeData(data) {
   const merged = mergeDeep(cloneValue(DEFAULT_DATA), data || {});
@@ -126,7 +118,6 @@ function normalizeData(data) {
 function loadData() {
   const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("vcatData");
   if (!raw) return cloneValue(DEFAULT_DATA);
-
   try {
     return normalizeData(JSON.parse(raw));
   } catch {
@@ -138,11 +129,8 @@ function saveData(data) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizeData(data)));
 }
 
-const byId = (id) => document.getElementById(id);
-
 function renderNav(data) {
-  const siteNameNodes = document.querySelectorAll('[data-bind="siteName"]');
-  siteNameNodes.forEach((el) => {
+  document.querySelectorAll('[data-bind="siteName"]').forEach((el) => {
     el.textContent = data.brand.name;
   });
 }
@@ -151,6 +139,7 @@ function renderHome(data) {
   byId("heroTitle").textContent = data.brand.name;
   byId("heroSlogan").textContent = data.brand.slogan;
   byId("heroIntro").textContent = data.brand.shortIntro;
+
   byId("quickStats").innerHTML = `
     <article><strong>${data.airlines.length}</strong><span>Airline Brands</span></article>
     <article><strong>${data.routes.length}</strong><span>Live Routes</span></article>
@@ -160,6 +149,15 @@ function renderHome(data) {
   byId("newsGrid").innerHTML = data.news
     .map((item) => `<article class="card"><h3>${item.title}</h3><p>${item.text}</p></article>`)
     .join("");
+
+  const featured = byId("featuredAirlines");
+  if (featured) {
+    featured.innerHTML = data.airlines
+      .map(
+        (a) => `<article class="card"><h3>${a.name}</h3><p class="muted">${a.style} · ${a.callsign}</p><p>${a.description}</p></article>`
+      )
+      .join("");
+  }
 }
 
 function renderAirlines(data) {
@@ -182,22 +180,59 @@ function renderAirlines(data) {
   );
 }
 
-function renderRoutes(data) {
+function renderRouteRows(routes) {
   const body = byId("routeRows");
   if (!body) return;
-
-  body.innerHTML = data.routes
+  body.innerHTML = routes
     .map((r) => `<tr><td>${r.from}</td><td>${r.to}</td><td>${r.airline}</td><td>${r.duration || "TBD"}</td></tr>`)
     .join("");
+}
+
+function renderRoutes(data) {
+  const routes = data.routes;
+  renderRouteRows(routes);
+
+  const fromFilter = byId("routeFilterFrom");
+  const toFilter = byId("routeFilterTo");
+  const airlineFilter = byId("routeFilterAirline");
+  const resetBtn = byId("routeFilterReset");
+  if (!fromFilter || !toFilter || !airlineFilter || !resetBtn) return;
+
+  airlineFilter.innerHTML = ["<option value=''>All airlines</option>"]
+    .concat(data.airlines.map((a) => `<option value="${a.name}">${a.name}</option>`))
+    .join("");
+
+  const applyFilters = () => {
+    const from = fromFilter.value.trim().toUpperCase();
+    const to = toFilter.value.trim().toUpperCase();
+    const airline = airlineFilter.value.trim();
+
+    const filtered = routes.filter((r) => {
+      const fromMatch = !from || r.from.includes(from);
+      const toMatch = !to || r.to.includes(to);
+      const airlineMatch = !airline || r.airline === airline;
+      return fromMatch && toMatch && airlineMatch;
+    });
+
+    renderRouteRows(filtered);
+  };
+
+  fromFilter.oninput = applyFilters;
+  toFilter.oninput = applyFilters;
+  airlineFilter.onchange = applyFilters;
+  resetBtn.onclick = () => {
+    fromFilter.value = "";
+    toFilter.value = "";
+    airlineFilter.value = "";
+    renderRouteRows(routes);
+  };
 }
 
 function renderOperations(data) {
   const list = byId("opsHighlights");
   if (list) list.innerHTML = data.operations.highlights.map((h) => `<li>${h}</li>`).join("");
-
   const training = byId("trainingText");
   if (training) training.textContent = data.operations.training;
-
   const contact = byId("contactLine");
   if (contact) contact.textContent = `${data.brand.contactEmail} · ${data.brand.discord}`;
 }
@@ -252,6 +287,7 @@ function setupAdminPage() {
     data.brand.discord = byId("discordInput").value.trim();
     saveData(data);
     data = loadData();
+    jsonStatus.textContent = "Brand saved.";
     paint();
   };
 
@@ -259,8 +295,7 @@ function setupAdminPage() {
     const name = byId("airlineName").value.trim();
     if (!name) return;
 
-    const exists = data.airlines.some((a) => a.name.toLowerCase() === name.toLowerCase());
-    if (exists) {
+    if (data.airlines.some((a) => a.name.toLowerCase() === name.toLowerCase())) {
       jsonStatus.textContent = "Airline already exists.";
       return;
     }
@@ -323,14 +358,22 @@ function setupAdminPage() {
 
   byId("saveJson").onclick = () => {
     try {
-      const parsed = JSON.parse(rawJson.value);
-      data = normalizeData(parsed);
+      data = normalizeData(JSON.parse(rawJson.value));
       saveData(data);
       data = loadData();
       jsonStatus.textContent = "JSON saved.";
       paint();
     } catch {
       jsonStatus.textContent = "Invalid JSON.";
+    }
+  };
+
+  byId("copyJson").onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(rawJson.value);
+      jsonStatus.textContent = "JSON copied to clipboard.";
+    } catch {
+      jsonStatus.textContent = "Could not copy JSON in this browser.";
     }
   };
 
