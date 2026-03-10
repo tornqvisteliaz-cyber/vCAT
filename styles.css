@@ -347,3 +347,27 @@ input, textarea, select {
   0% { transform: translateX(-120%); }
   100% { transform: translateX(130%); }
 }
+
+
+.admin-mini {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 35;
+  text-decoration: none;
+  background: rgba(10,14,24,.82);
+  color: #f2eadb;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 999px;
+  padding: .35rem .7rem;
+  font-size: .68rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  opacity: .85;
+  transition: transform .2s ease, opacity .2s ease, border-color .2s ease;
+}
+.admin-mini:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  border-color: rgba(215,184,137,.75);
+}
