@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Routes | vCAT</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="routes" class="page-shell">
+  <header class="page-top">
+    <div class="container page-top-wrap">
+      <button class="menu-btn" data-menu-toggle aria-expanded="false">☰ Menu</button>
+      <h2 class="brand" data-bind="siteName"></h2>
+      <a class="nav-link" href="admin.html">Admin</a>
+    </div>
+  </header>
+  <aside id="siteMenu" class="site-menu">
+    <a href="index.html">Home</a><a href="airlines.html">Airlines</a><a href="fleet.html">Fleet</a><a href="destinations.html">Destinations</a><a href="routes.html">Routes</a><a href="operations.html">Operations</a><a href="community.html">Community</a><a href="admin.html">Admin</a>
+  </aside>
+
+  <main class="container page-main">
+    <p class="section-title reveal">Network & Timetable</p>
+    <p class="section-copy reveal">Published routes for Airseven and Pop! with current block times.</p>
+    <div class="route-filters reveal">
+      <input id="routeFilterFrom" placeholder="Filter from (ICAO)" />
+      <input id="routeFilterTo" placeholder="Filter to (ICAO)" />
+      <select id="routeFilterAirline"></select>
+      <button id="routeFilterReset" class="btn alt">Reset</button>
+    </div>
+    <table class="table reveal">
+      <thead><tr><th>From</th><th>To</th><th>Airline</th><th>Block Time</th></tr></thead>
+      <tbody id="routeRows"></tbody>
+    </table>
+  </main>
+
+  <footer class="container footer">Route planning by dispatch. <a class="admin-discreet" href="admin.html">ops</a></footer>
+  <script src="app.js"></script>
+  <script>window.vcat.renderByPage();</script>
+</body>
+</html>
