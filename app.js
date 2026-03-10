@@ -49,6 +49,7 @@ const DEFAULT_DATA = {
 };
 
 const STORAGE_KEY = "vcatDataV2";
+const ADMIN_PASSWORD = "popwings";
 const byId = (id) => document.getElementById(id);
 const toStringSafe = (value, fallback = "") => (typeof value === "string" ? value : fallback);
 const toArraySafe = (value) => (Array.isArray(value) ? value : []);
@@ -315,7 +316,31 @@ function renderByPage() {
 }
 
 function setupAdminPage() {
-  if (!byId("adminRoot")) return;
+  const adminRoot = byId("adminRoot");
+  if (!adminRoot) return;
+
+  const gate = byId("adminGate");
+  const gateInput = byId("adminPassword");
+  const gateStatus = byId("gateStatus");
+  const unlockBtn = byId("unlockAdmin");
+
+  const unlock = () => {
+    gate.hidden = true;
+    adminRoot.hidden = false;
+    initRevealAnimations();
+  };
+
+  unlockBtn?.addEventListener("click", () => {
+    if ((gateInput?.value || "") === ADMIN_PASSWORD) {
+      unlock();
+    } else {
+      gateStatus.textContent = "Wrong password.";
+    }
+  });
+
+  gateInput?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") unlockBtn?.click();
+  });
 
   let data = loadData();
   const rawJson = byId("rawJson");

@@ -16,7 +16,17 @@
     </div>
   </header>
 
-  <main class="container admin-wrap" id="adminRoot">
+  <main class="container admin-gate" id="adminGate">
+    <section class="panel gate-panel reveal show">
+      <h3>Admin Login</h3>
+      <p class="muted">Enter password to access operations console.</p>
+      <label>Password<input id="adminPassword" type="password" placeholder="••••••••" /></label>
+      <button class="btn" id="unlockAdmin">Unlock</button>
+      <p id="gateStatus" class="muted"></p>
+    </section>
+  </main>
+
+  <main class="container admin-wrap" id="adminRoot" hidden>
     <section class="panel">
       <h3>General Brand</h3>
       <label>Name<input id="siteNameInput" /></label>

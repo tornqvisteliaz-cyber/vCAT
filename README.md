@@ -2,9 +2,6 @@
 
 Multi-page website for Copenhagen AirTaxi Virtual.
 
-## Documentation
-- `docs/rowslink-prd.md` - Product Requirements Document for RowsLink.
-
 ## Pages
 - `/index.html` (home)
 - `/airlines.html`
