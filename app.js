@@ -50,6 +50,7 @@ const DEFAULT_DATA = {
 
 const STORAGE_KEY = "vcatDataV2";
 const ADMIN_PASSWORD = "popwings";
+const ADMIN_PASSWORD_KEY = "vcatAdminPassword";
 const byId = (id) => document.getElementById(id);
 const toStringSafe = (value, fallback = "") => (typeof value === "string" ? value : fallback);
 const toArraySafe = (value) => (Array.isArray(value) ? value : []);
@@ -126,6 +127,15 @@ function loadData() {
 
 function saveData(data) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizeData(data)));
+}
+
+function getAdminPassword() {
+  const fromStorage = localStorage.getItem(ADMIN_PASSWORD_KEY);
+  return (fromStorage && fromStorage.trim()) || ADMIN_PASSWORD;
+}
+
+function setAdminPassword(newPassword) {
+  localStorage.setItem(ADMIN_PASSWORD_KEY, newPassword);
 }
 
 function initMenu() {
@@ -331,7 +341,7 @@ function setupAdminPage() {
   };
 
   unlockBtn?.addEventListener("click", () => {
-    if ((gateInput?.value || "") === ADMIN_PASSWORD) {
+    if ((gateInput?.value || "").trim() === getAdminPassword()) {
       unlock();
     } else {
       gateStatus.textContent = "Wrong password.";
@@ -369,6 +379,33 @@ function setupAdminPage() {
     syncRouteAirlineSelect();
     rawJson.value = JSON.stringify(data, null, 2);
   }
+
+  byId("saveAdminPassword")?.addEventListener("click", () => {
+    const current = (byId("currentAdminPassword")?.value || "").trim();
+    const next = (byId("newAdminPassword")?.value || "").trim();
+    const confirm = (byId("confirmAdminPassword")?.value || "").trim();
+
+    if (current !== getAdminPassword()) {
+      jsonStatus.textContent = "Current password is wrong.";
+      return;
+    }
+
+    if (!next || next.length < 4) {
+      jsonStatus.textContent = "New password must be at least 4 characters.";
+      return;
+    }
+
+    if (next !== confirm) {
+      jsonStatus.textContent = "New passwords do not match.";
+      return;
+    }
+
+    setAdminPassword(next);
+    byId("currentAdminPassword").value = "";
+    byId("newAdminPassword").value = "";
+    byId("confirmAdminPassword").value = "";
+    jsonStatus.textContent = "Admin password updated.";
+  });
 
   byId("saveGeneral").onclick = () => {
     data.brand.name = byId("siteNameInput").value.trim() || DEFAULT_DATA.brand.name;
