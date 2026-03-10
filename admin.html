@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Operations Console | vCAT</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="page-shell">
+  <header class="page-top">
+    <div class="container page-top-wrap">
+      <h2 class="brand">Operations Console</h2>
+      <nav>
+        <a class="nav-link" href="index.html">Back to site</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container admin-gate" id="adminGate">
+    <section class="panel gate-panel reveal show">
+      <h3>Admin Login</h3>
+      <p class="muted">Enter password to access operations console.</p>
+      <label>Password<input id="adminPassword" type="password" placeholder="••••••••" /></label>
+      <button class="btn" id="unlockAdmin">Unlock</button>
+      <p id="gateStatus" class="muted"></p>
+    </section>
+  </main>
+
+  <main class="container admin-wrap" id="adminRoot" hidden>
+    <section class="panel">
+      <h3>General Brand</h3>
+      <label>Name<input id="siteNameInput" /></label>
+      <label>Slogan<input id="sloganInput" /></label>
+      <label>Intro<textarea id="introInput" rows="3"></textarea></label>
+      <label>Contact Email<input id="emailInput" /></label>
+      <label>Discord URL<input id="discordInput" /></label>
+      <button class="btn" id="saveGeneral">Save general</button>
+      <button class="btn alt" id="resetData">Reset defaults</button>
+
+
+      <h3>Admin Password</h3>
+      <label>Current password<input id="currentAdminPassword" type="password" /></label>
+      <label>New password<input id="newAdminPassword" type="password" /></label>
+      <label>Confirm new password<input id="confirmAdminPassword" type="password" /></label>
+      <button class="btn" id="saveAdminPassword">Save admin password</button>
+
+      <h3>Add Airline</h3>
+      <label>Name<input id="airlineName" /></label>
+      <label>Style<input id="airlineStyle" /></label>
+      <label>Callsign<input id="airlineCallsign" /></label>
+      <label>Description<textarea id="airlineDescription" rows="2"></textarea></label>
+      <label>Bases (comma)<input id="airlineBases" /></label>
+      <label>Fleet (comma)<input id="airlineFleet" /></label>
+      <button class="btn" id="addAirline">Add airline</button>
+      <ul class="list" id="airlineList"></ul>
+
+      <h3>Add Route</h3>
+      <label>From<input id="routeFrom" /></label>
+      <label>To<input id="routeTo" /></label>
+      <label>Airline<select id="routeAirline"></select></label>
+      <label>Duration<input id="routeDuration" placeholder="1h 20m" /></label>
+      <button class="btn" id="addRoute">Add route</button>
+      <ul class="list" id="routeList"></ul>
+    </section>
+
+    <section class="panel">
+      <h3>Full JSON Editor (change everything)</h3>
+      <p class="muted">Edit full site data model directly.</p>
+      <textarea id="rawJson" rows="32"></textarea>
+      <p id="jsonStatus" class="muted"></p>
+      <button class="btn" id="saveJson">Save JSON</button>
+      <button class="btn alt" id="copyJson">Copy JSON</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+  <script>window.vcat.setupAdminPage();</script>
+</body>
+</html>
